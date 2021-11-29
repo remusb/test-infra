@@ -1997,7 +1997,7 @@ func (c *client) readPaginatedResultsWithValuesWithContext(ctx context.Context, 
 		// * next: <ghe-url>/api/v3/repositories/22/pulls?per_page=100&page=2
 		// * in this case prefix will be "/api/v3" and we will strip the prefix. If we don't do that,
 		//   the next call will go to <ghe-url>/api/v3/api/v3/repositories/22/pulls?per_page=100&page=2
-		prefix := strings.TrimSuffix(resp.Request.URL.RequestURI(), pagedPath)
+		prefix := "/api/v3"
 
 		u, err := url.Parse(link)
 		if err != nil {
