@@ -67,7 +67,7 @@ func (*appsAuthError) Is(target error) bool {
 }
 
 func (arr *appsRoundTripper) RoundTrip(r *http.Request) (*http.Response, error) {
-	if strings.HasPrefix(r.URL.Path, "/app") {
+	if strings.HasPrefix(r.URL.Path, "/app") || strings.HasPrefix(r.URL.Path, "/api/v3/app") {
 		if err := arr.addAppAuth(r); err != nil {
 			return nil, err
 		}
@@ -93,7 +93,7 @@ func (arr *appsRoundTripper) addAppAuth(r *http.Request) *appsAuthError {
 	r.Header.Set(ghcache.TokenExpiryAtHeader, expiresAt.Format(time.RFC3339))
 
 	// We call the /app endpoint to resolve the slug, so we can't set it there
-	if r.URL.Path == "/app" {
+	if r.URL.Path == "/app" || r.URL.Path == "/api/v3/app" {
 		r.Header.Set(ghcache.TokenBudgetIdentifierHeader, arr.appID)
 	} else {
 		slug, err := arr.getSlug()
